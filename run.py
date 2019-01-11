@@ -11,7 +11,7 @@ from query_strategies import RandomSampling, LeastConfidence, MarginSampling, En
                                 AdversarialBIM, AdversarialDeepFool, ActiveLearningByLearning
 
 # parse args
-args = args_parser()
+arg = args_parser()
 # parameters
 SEED = 1
 
@@ -83,7 +83,7 @@ net = get_net(DATA_NAME)
 handler = get_handler(DATA_NAME)
 
 
-if(args.qs=='random'):
+if(arg.qs=='random'):
     print("random")
     strategy = RandomSampling(X_tr, Y_tr, idxs_lb, net, handler, args)
 # strategy = LeastConfidence(X_tr, Y_tr, idxs_lb, net, handler, args)
