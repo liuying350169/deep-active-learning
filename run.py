@@ -2,7 +2,7 @@ import numpy as np
 from dataset import get_dataset, get_handler
 from model import get_net
 from torchvision import transforms
-import tqdm
+from tqdm import tqdm
 import torch
 from query_strategies import RandomSampling, LeastConfidence, MarginSampling, EntropySampling, \
                                 LeastConfidenceDropout, MarginSamplingDropout, EntropySamplingDropout, \
