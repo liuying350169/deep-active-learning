@@ -4,11 +4,14 @@ from model import get_net
 from torchvision import transforms
 from tqdm import tqdm
 import torch
+from options import args_parser
 from query_strategies import RandomSampling, LeastConfidence, MarginSampling, EntropySampling, \
                                 LeastConfidenceDropout, MarginSamplingDropout, EntropySamplingDropout, \
                                 KMeansSampling, KCenterGreedy, BALDDropout, CoreSet, \
                                 AdversarialBIM, AdversarialDeepFool, ActiveLearningByLearning
 
+# parse args
+args = args_parser()
 # parameters
 SEED = 1
 
@@ -79,7 +82,10 @@ idxs_lb[idxs_tmp[:NUM_INIT_LB]] = True
 net = get_net(DATA_NAME)
 handler = get_handler(DATA_NAME)
 
-strategy = RandomSampling(X_tr, Y_tr, idxs_lb, net, handler, args)
+
+if(args.qs=='random'):
+    print("random")
+    strategy = RandomSampling(X_tr, Y_tr, idxs_lb, net, handler, args)
 # strategy = LeastConfidence(X_tr, Y_tr, idxs_lb, net, handler, args)
 # strategy = MarginSampling(X_tr, Y_tr, idxs_lb, net, handler, args)
 # strategy = EntropySampling(X_tr, Y_tr, idxs_lb, net, handler, args)
