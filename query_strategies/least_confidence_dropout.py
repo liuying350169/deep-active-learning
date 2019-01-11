@@ -9,6 +9,7 @@ class LeastConfidenceDropout(Strategy):
 
 	def query(self, n):
 		idxs_unlabeled = np.arange(self.n_pool)[~self.idxs_lb]
+		#~ is an wei bu ma
 		probs = self.predict_prob_dropout(self.X[idxs_unlabeled], self.Y[idxs_unlabeled], self.n_drop)
 		U = probs.max(1)[0]
 		return idxs_unlabeled[U.sort()[1][:n]]

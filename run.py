@@ -2,6 +2,7 @@ import numpy as np
 from dataset import get_dataset, get_handler
 from model import get_net
 from torchvision import transforms
+import tqdm
 import torch
 from query_strategies import RandomSampling, LeastConfidence, MarginSampling, EntropySampling, \
                                 LeastConfidenceDropout, MarginSamplingDropout, EntropySamplingDropout, \
@@ -11,8 +12,8 @@ from query_strategies import RandomSampling, LeastConfidence, MarginSampling, En
 # parameters
 SEED = 1
 
-NUM_INIT_LB = 10000
-NUM_QUERY = 1000
+NUM_INIT_LB = 600
+NUM_QUERY = 600
 NUM_ROUND = 10
 
 DATA_NAME = 'MNIST'
@@ -62,9 +63,17 @@ print('number of testing pool: {}'.format(n_test))
 
 # generate initial labeled pool
 idxs_lb = np.zeros(n_pool, dtype=bool)
+
+#print(idxs_lb)
 idxs_tmp = np.arange(n_pool)
+#print(idxs_tmp)
 np.random.shuffle(idxs_tmp)
+#print(idxs_tmp)
+#random select 600 change into labeled, select the first 600 of shuffled dataset
+#idxs_lb is which sample is labeled
 idxs_lb[idxs_tmp[:NUM_INIT_LB]] = True
+
+
 
 # load network
 net = get_net(DATA_NAME)
@@ -86,8 +95,9 @@ strategy = RandomSampling(X_tr, Y_tr, idxs_lb, net, handler, args)
 # albl_list = [MarginSampling(X_tr, Y_tr, idxs_lb, net, handler, args),
 #              KMeansSampling(X_tr, Y_tr, idxs_lb, net, handler, args)]
 # strategy = ActiveLearningByLearning(X_tr, Y_tr, idxs_lb, net, handler, args, strategy_list=albl_list, delta=0.1)
-
+#print(strategy)
 # print info
+
 print(DATA_NAME)
 print('SEED {}'.format(SEED))
 print(type(strategy).__name__)
@@ -99,7 +109,7 @@ acc = np.zeros(NUM_ROUND+1)
 acc[0] = 1.0 * (Y_te==P).sum().item() / len(Y_te)
 print('Round 0\ntesting accuracy {}'.format(acc[0]))
 
-for rd in range(1, NUM_ROUND+1):
+for rd in tqdm(range(1, NUM_ROUND+1)):
     print('Round {}'.format(rd))
 
     # query
