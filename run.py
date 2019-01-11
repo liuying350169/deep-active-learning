@@ -50,7 +50,7 @@ args = args_pool[DATA_NAME]
 # set seed
 np.random.seed(SEED)
 torch.manual_seed(SEED)
-torch.backends.cudnn.enabled = False
+torch.backends.cudnn.enabled = True
 
 # load dataset
 X_tr, Y_tr, X_te, Y_te = get_dataset(DATA_NAME)
