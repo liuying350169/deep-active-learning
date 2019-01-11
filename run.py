@@ -126,6 +126,7 @@ P = strategy.predict(X_te, Y_te)
 acc = np.zeros(NUM_ROUND+1)
 acc[0] = 1.0 * (Y_te==P).sum().item() / len(Y_te)
 print('Round 0\ntesting accuracy {}'.format(acc[0]))
+#print('Round 0\ntesting accuracy {}'.format(acc[0]),file=f)
 
 for rd in tqdm(range(1, NUM_ROUND+1)):
     print('Round {}'.format(rd))
@@ -143,7 +144,12 @@ for rd in tqdm(range(1, NUM_ROUND+1)):
     acc[rd] = 1.0 * (Y_te==P).sum().item() / len(Y_te)
     print('testing accuracy {}'.format(acc[rd]))
 
+
 # print results
 print('SEED {}'.format(SEED))
 print(type(strategy).__name__)
 print(acc)
+f = open('./test.txt', 'a')
+print(args, file=f)
+print(acc,file=f)
+f.close()
