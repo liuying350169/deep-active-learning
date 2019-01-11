@@ -84,24 +84,36 @@ handler = get_handler(DATA_NAME)
 
 
 if(arg.qs=='random'):
-    print("random")
     strategy = RandomSampling(X_tr, Y_tr, idxs_lb, net, handler, args)
-# strategy = LeastConfidence(X_tr, Y_tr, idxs_lb, net, handler, args)
-# strategy = MarginSampling(X_tr, Y_tr, idxs_lb, net, handler, args)
-# strategy = EntropySampling(X_tr, Y_tr, idxs_lb, net, handler, args)
-# strategy = LeastConfidenceDropout(X_tr, Y_tr, idxs_lb, net, handler, args, n_drop=10)
-# strategy = MarginSamplingDropout(X_tr, Y_tr, idxs_lb, net, handler, args, n_drop=10)
-# strategy = EntropySamplingDropout(X_tr, Y_tr, idxs_lb, net, handler, args, n_drop=10)
-# strategy = KMeansSampling(X_tr, Y_tr, idxs_lb, net, handler, args)
-# strategy = KCenterGreedy(X_tr, Y_tr, idxs_lb, net, handler, args)
-# strategy = BALDDropout(X_tr, Y_tr, idxs_lb, net, handler, args, n_drop=10)
-# strategy = CoreSet(X_tr, Y_tr, idxs_lb, net, handler, args)
-# strategy = AdversarialBIM(X_tr, Y_tr, idxs_lb, net, handler, args, eps=0.05)
-# strategy = AdversarialDeepFool(X_tr, Y_tr, idxs_lb, net, handler, args, max_iter=50)
-# albl_list = [MarginSampling(X_tr, Y_tr, idxs_lb, net, handler, args),
-#              KMeansSampling(X_tr, Y_tr, idxs_lb, net, handler, args)]
-# strategy = ActiveLearningByLearning(X_tr, Y_tr, idxs_lb, net, handler, args, strategy_list=albl_list, delta=0.1)
-#print(strategy)
+if(arg.qs=='leastconfidence'):
+    strategy = LeastConfidence(X_tr, Y_tr, idxs_lb, net, handler, args)
+if(arg.qs=='marginsampling'):
+    strategy = MarginSampling(X_tr, Y_tr, idxs_lb, net, handler, args)
+if(arg.qs=='entropysampling'):
+    strategy = EntropySampling(X_tr, Y_tr, idxs_lb, net, handler, args)
+if(arg.qs=='leastconfidencedropout'):
+    strategy = LeastConfidenceDropout(X_tr, Y_tr, idxs_lb, net, handler, args, n_drop=10)
+if (arg.qs == 'marginsamplingdropout'):
+    strategy = MarginSamplingDropout(X_tr, Y_tr, idxs_lb, net, handler, args, n_drop=10)
+if (arg.qs == 'entropysamplingdropout'):
+    strategy = EntropySamplingDropout(X_tr, Y_tr, idxs_lb, net, handler, args, n_drop=10)
+if (arg.qs == 'kmeanssampling'):
+    strategy = KMeansSampling(X_tr, Y_tr, idxs_lb, net, handler, args)
+if (arg.qs == 'kcentergreedy'):
+    strategy = KCenterGreedy(X_tr, Y_tr, idxs_lb, net, handler, args)
+if (arg.qs == 'balddropout'):
+    strategy = BALDDropout(X_tr, Y_tr, idxs_lb, net, handler, args, n_drop=10)
+if (arg.qs == 'coreset'):
+    strategy = CoreSet(X_tr, Y_tr, idxs_lb, net, handler, args)
+if (arg.qs == 'adversarialbim'):
+    strategy = AdversarialBIM(X_tr, Y_tr, idxs_lb, net, handler, args, eps=0.05)
+if (arg.qs == 'adversarialdeepfool'):
+    strategy = AdversarialDeepFool(X_tr, Y_tr, idxs_lb, net, handler, args, max_iter=50)
+if (arg.qs == 'activelearningbylearning'):
+    albl_list = [MarginSampling(X_tr, Y_tr, idxs_lb, net, handler, args),
+                 KMeansSampling(X_tr, Y_tr, idxs_lb, net, handler, args)]
+    strategy = ActiveLearningByLearning(X_tr, Y_tr, idxs_lb, net, handler, args, strategy_list=albl_list, delta=0.1)
+print(strategy)
 # print info
 
 print(DATA_NAME)
