@@ -16,8 +16,8 @@ arg = args_parser()
 SEED = 1
 total_samples = 12000
 
-NUM_INIT_LB = 200
-NUM_QUERY = 200
+NUM_INIT_LB = 300
+NUM_QUERY = 300
 NUM_ROUND = 50
 
 DATA_NAME = 'MNIST'
