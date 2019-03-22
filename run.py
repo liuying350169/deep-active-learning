@@ -8,16 +8,17 @@ from options import args_parser
 from query_strategies import RandomSampling, LeastConfidence, MarginSampling, EntropySampling, \
                                 LeastConfidenceDropout, MarginSamplingDropout, EntropySamplingDropout, \
                                 KMeansSampling, KCenterGreedy, BALDDropout, CoreSet, \
-                                AdversarialBIM, AdversarialDeepFool, ActiveLearningByLearning
+                                AdversarialBIM, AdversarialDeepFool, ActiveLearningByLearning, Balance
 
 # parse args
 arg = args_parser()
 # parameters
 SEED = 1
+total_samples = 12000
 
-NUM_INIT_LB = 600
-NUM_QUERY = 600
-NUM_ROUND = 10
+NUM_INIT_LB = 200
+NUM_QUERY = 200
+NUM_ROUND = 50
 
 DATA_NAME = 'MNIST'
 # DATA_NAME = 'FashionMNIST'
@@ -52,10 +53,12 @@ np.random.seed(SEED)
 torch.manual_seed(SEED)
 torch.backends.cudnn.enabled = False
 
+
+
 # load dataset
 X_tr, Y_tr, X_te, Y_te = get_dataset(DATA_NAME)
-X_tr = X_tr[:40000]
-Y_tr = Y_tr[:40000]
+X_tr = X_tr[:total_samples]
+Y_tr = Y_tr[:total_samples]
 
 # start experiment
 n_pool = len(Y_tr)
@@ -65,6 +68,7 @@ print('number of unlabeled pool: {}'.format(n_pool - NUM_INIT_LB))
 print('number of testing pool: {}'.format(n_test))
 
 # generate initial labeled pool
+#n_pool = 40000
 idxs_lb = np.zeros(n_pool, dtype=bool)
 
 #print(idxs_lb)
@@ -85,6 +89,8 @@ handler = get_handler(DATA_NAME)
 
 if(arg.qs=='random'):
     strategy = RandomSampling(X_tr, Y_tr, idxs_lb, net, handler, args)
+if(arg.qs=='balance'):
+    strategy = Balance(X_tr, Y_tr, idxs_lb, net, handler, args)
 if(arg.qs=='leastconfidence'):
     strategy = LeastConfidence(X_tr, Y_tr, idxs_lb, net, handler, args)
 if(arg.qs=='marginsampling'):
@@ -132,8 +138,33 @@ for rd in tqdm(range(1, NUM_ROUND+1)):
     print('Round {}'.format(rd))
 
     # query
-    q_idxs = strategy.query(NUM_QUERY)
-    idxs_lb[q_idxs] = True
+    if(arg.qs=='balance'):
+        #求Balance
+        balance = [1,1,1,1,1,1,1,1,1,1]
+        balance_tmp=[0,0,0,0,0,0,0,0,0,0]
+        for i in range(total_samples):
+            if(idxs_lb[i]==True):
+                balance_tmp[Y_tr[i]] = balance_tmp[Y_tr[i]]+1
+        print(balance_tmp)
+        total = sum(balance_tmp)
+        for i in range(10):
+            balance[i] = 2-(10*balance_tmp[i]/total)
+        print(balance)
+        q_idxs = strategy.query(NUM_QUERY, balance)
+        idxs_lb[q_idxs] = True
+    else:
+        balance = [1,1,1,1,1,1,1,1,1,1]
+        balance_tmp=[0,0,0,0,0,0,0,0,0,0]
+        for i in range(total_samples):
+            if(idxs_lb[i]==True):
+                balance_tmp[Y_tr[i]] = balance_tmp[Y_tr[i]]+1
+        print(balance_tmp)
+        total = sum(balance_tmp)
+        for i in range(10):
+            balance[i] = 2-(10*balance_tmp[i]/total)
+        print(balance)
+        q_idxs = strategy.query(NUM_QUERY)
+        idxs_lb[q_idxs] = True
 
     # update
     strategy.update(idxs_lb)

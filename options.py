@@ -37,7 +37,9 @@ def args_parser():
     # parser.add_argument('--gpu', type=int, default=0, help="GPU ID")
     # parser.add_argument('--stopping_rounds', type=int, default=10, help='rounds of early stopping')
     # parser.add_argument('--verbose', type=int, default=1, help='verbose print, 1 for True, 0 for False')
-    parser.add_argument('--qs', type=str, default='random', help='query strategies (default: random)')
+
+    #parser.add_argument('--qs', type=str, default='balance', help='query strategies (default: random)')
+    parser.add_argument('--qs', type=str, default='marginsampling', help='query strategies (default: random)')
 
     args = parser.parse_args()
     return args

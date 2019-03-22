@@ -17,6 +17,7 @@ class Strategy:
         self.device = torch.device("cuda" if use_cuda else "cpu")
 
     def query(self, n):
+
         pass
 
     def update(self, idxs_lb):
