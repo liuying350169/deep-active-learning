@@ -145,11 +145,20 @@ for rd in tqdm(range(1, NUM_ROUND+1)):
         for i in range(total_samples):
             if(idxs_lb[i]==True):
                 balance_tmp[Y_tr[i]] = balance_tmp[Y_tr[i]]+1
+        f = open('./balance_tmp.txt', 'a')
         print(balance_tmp)
+        print(balance_tmp,file=f)
+        f.close()
+
         total = sum(balance_tmp)
         for i in range(10):
             balance[i] = 2-(10*balance_tmp[i]/total)
+
+        f = open('./balance.txt', 'a')
         print(balance)
+        print(balance,file=f)
+        f.close()
+
         q_idxs = strategy.query(NUM_QUERY, balance)
         idxs_lb[q_idxs] = True
     else:
@@ -158,11 +167,24 @@ for rd in tqdm(range(1, NUM_ROUND+1)):
         for i in range(total_samples):
             if(idxs_lb[i]==True):
                 balance_tmp[Y_tr[i]] = balance_tmp[Y_tr[i]]+1
+
+
+        f = open('./balance_tmp.txt', 'a')
         print(balance_tmp)
+        print(balance_tmp,file=f)
+        f.close()
+
+
         total = sum(balance_tmp)
         for i in range(10):
             balance[i] = 2-(10*balance_tmp[i]/total)
+
+        f = open('./balance.txt', 'a')
         print(balance)
+        print(balance,file=f)
+        f.close()
+
+
         q_idxs = strategy.query(NUM_QUERY)
         idxs_lb[q_idxs] = True
 
@@ -173,14 +195,15 @@ for rd in tqdm(range(1, NUM_ROUND+1)):
     # round accuracy
     P = strategy.predict(X_te, Y_te)
     acc[rd] = 1.0 * (Y_te==P).sum().item() / len(Y_te)
+    f = open('./acc.txt', 'a')
     print('testing accuracy {}'.format(acc[rd]))
+    #print(args, file=f)
+    print(acc, file=f)
+    f.close()
 
 
 # print results
 print('SEED {}'.format(SEED))
 print(type(strategy).__name__)
 print(acc)
-f = open('./test.txt', 'a')
-print(args, file=f)
-print(acc,file=f)
-f.close()
+
