@@ -148,7 +148,7 @@ for rd in tqdm(range(1, NUM_ROUND+1)):
                 balance_tmp[Y_tr[i]] = balance_tmp[Y_tr[i]]+1
         f = open('./balance_tmp.txt', 'a')
         print(balance_tmp)
-        print(balance_tmp,file=f)
+        print(balance_tmp, file=f)
         f.close()
 
         total = sum(balance_tmp)
@@ -157,7 +157,7 @@ for rd in tqdm(range(1, NUM_ROUND+1)):
 
         f = open('./balance.txt', 'a')
         print(balance)
-        print(balance,file=f)
+        print(balance, file=f)
         f.close()
 
         q_idxs = strategy.query(NUM_QUERY, balance)
@@ -172,7 +172,7 @@ for rd in tqdm(range(1, NUM_ROUND+1)):
 
         f = open('./balance_tmp.txt', 'a')
         print(balance_tmp)
-        print(balance_tmp,file=f)
+        print(balance_tmp, file=f)
         f.close()
 
 
@@ -182,7 +182,7 @@ for rd in tqdm(range(1, NUM_ROUND+1)):
 
         f = open('./balance.txt', 'a')
         print(balance)
-        print(balance,file=f)
+        print(balance, file=f)
         f.close()
 
 
